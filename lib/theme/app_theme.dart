@@ -10,6 +10,11 @@ class AppTheme{
       color: AppColors.primaryColor,
       elevation: 0
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          topRight: Radius.circular(15), topLeft: Radius.circular(15)),
+    )),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.primaryColor,
       shape: RoundedRectangleBorder(
@@ -36,12 +41,18 @@ class AppTheme{
           fontSize: 18,
           fontWeight: FontWeight.bold
       ),
-
-      bodyMedium:  GoogleFonts.roboto(
+        bodyLarge: GoogleFonts.inter(
+            color: AppColors.blackColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w400),
+        bodyMedium:  GoogleFonts.roboto(
           color: AppColors.blackColor,
           fontSize: 15,
-          fontWeight: FontWeight.bold
-      )
+          fontWeight: FontWeight.bold),
+        bodySmall: GoogleFonts.inter(
+            color: AppColors.hintColor,
+            fontSize: 18,
+            fontWeight: FontWeight.w400)
 
     ),
 

@@ -3,6 +3,8 @@ import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/settings_screen/settings_screen.dart';
 import 'package:flutter_todo_app/tasks_screen/tasks_screen.dart';
 
+import '../add_task_bottom_sheet/add_task_bottom_sheet.dart';
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
@@ -48,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: didTapOnFloatingActionButton,
         child: Icon(Icons.add,size: 35,color: AppColors.whiteColor,),
       ),
       body:Column(
@@ -58,5 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  void didTapOnFloatingActionButton() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return AddTaskBottomSheet();
+        });
   }
 }

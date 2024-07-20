@@ -18,5 +18,5 @@ class AppColors{
 
   static final Color unselectedIconColor  = Color(0xff969b9e);
 
-
+  static final Color hintColor = Color(0xffA9A9A9);
 }
