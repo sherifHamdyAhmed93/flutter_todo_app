@@ -10,6 +10,19 @@ class AppTheme{
       color: AppColors.primaryColor,
       elevation: 0
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColors.primaryColor,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: AppColors.whiteColor,width: 4),
+        borderRadius: BorderRadius.circular(30)
+      )
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: AppColors.primaryColor,
+      unselectedItemColor: AppColors.unselectedIconColor,
+      showUnselectedLabels: false,
+        backgroundColor: Colors.transparent
+    ),
     scaffoldBackgroundColor: AppColors.backgroundLightColor,
     textTheme: TextTheme(
       titleLarge: GoogleFonts.poppins(

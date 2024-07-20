@@ -16,5 +16,7 @@ class AppColors{
   static final Color cardBackgroundLightColor  = Color(0xffffffff);
   static final Color cardBackgroundDarkColor  = Color(0xff141922);
 
+  static final Color unselectedIconColor  = Color(0xff969b9e);
+
 
 }
