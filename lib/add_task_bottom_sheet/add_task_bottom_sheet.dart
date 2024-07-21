@@ -21,7 +21,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
 
     return Container(
+      decoration: BoxDecoration(
+          color: themeProvider.getContainerBackground(),
+          borderRadius: BorderRadius.circular(10)),
       margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      padding: EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,

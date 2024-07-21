@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
@@ -61,6 +62,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: HomeScreen.screenName,
       routes: {
         HomeScreen.screenName: (context) => HomeScreen(),
+        EditTaskScreen.screenName: (context) => EditTaskScreen(),
       },
     );
   }
