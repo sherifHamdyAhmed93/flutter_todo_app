@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
-import 'package:flutter_todo_app/theme/app_theme.dart';
+import 'package:flutter_todo_app/provider/app_language_provider.dart';
+import 'package:flutter_todo_app/provider/app_theme_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const MyApp());
+  runApp(MultiProvider(child: MyApp(), providers: [
+    ChangeNotifierProvider(create: (context) => AppThemeProvider()),
+    ChangeNotifierProvider(create: (context) => AppLanguageProvider()),
+  ]));
 }
 
 class MyApp extends StatefulWidget {
@@ -41,9 +47,17 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+    AppLanguageProvider languageProvider =
+        Provider.of<AppLanguageProvider>(context);
+
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: Locale(languageProvider.currentAppLanguage),
       title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
+      theme: themeProvider.getCurrentAppTheme(),
+      themeMode: themeProvider.currentAppTheme,
       initialRoute: HomeScreen.screenName,
       routes: {
         HomeScreen.screenName: (context) => HomeScreen(),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/app_theme_provider.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -14,6 +18,8 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
       child: Column(
@@ -23,11 +29,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           Column(
             children: [
               Text(
-                'Add new Task',
+                AppLocalizations.of(context)!.add_new_task,
                 style: Theme.of(context)
                     .textTheme
-                    .titleMedium
-                    ?.copyWith(color: AppColors.blackColor),
+                    .titleMedium?.copyWith(
+                    color: themeProvider.isCurrentAppThemeLight()
+                        ? AppColors.blackColor
+                        : AppColors.whiteColor),
               ),
               Form(
                   key: keys,
@@ -37,11 +45,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       TextFormField(
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
-                            hintText: 'enter your task',
+                            hintText: AppLocalizations.of(context)!
+                                .enter_your_task_hint,
                             hintStyle: Theme.of(context).textTheme.bodySmall),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter task name';
+                            return AppLocalizations.of(context)!
+                                .please_enter_task_name_error;
                           }
                           return null;
                         },
@@ -53,11 +63,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         maxLines: 4,
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
-                            hintText: 'enter task description',
+                            hintText: AppLocalizations.of(context)!
+                                .enter_task_description_hint,
                             hintStyle: Theme.of(context).textTheme.bodySmall),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter task desc';
+                            return AppLocalizations.of(context)!
+                                .please_enter_task_desc_error;
                           }
                           return null;
                         },
@@ -66,7 +78,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         height: 20,
                       ),
                       Text(
-                        'Select Time',
+                        AppLocalizations.of(context)!.select_time,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       TextButton(
@@ -84,7 +96,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   padding: EdgeInsets.symmetric(vertical: 10)),
               onPressed: didTapOnAddTask,
               child: Text(
-                'Add Task',
+                AppLocalizations.of(context)!.add_task_button_title,
                 style: Theme.of(context).textTheme.titleLarge,
               ))
         ],

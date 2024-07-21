@@ -1,0 +1,18 @@
+{
+"app_title" : "المهام",
+"tasks_tab" : "المهام",
+  "settings_tab" : "الاعدادات",
+   "language" : "اللغة",
+   "arabic" : "العربية",
+   "english" : "الانجليزية",
+   "theme" : "النمط",
+   "night_mode" : "ليلي",
+   "day_mode" : "نهاري",
+   "add_new_task": "إضافة مهمة جديدة",
+     "enter_your_task_hint": "أدخل مهمتك",
+     "please_enter_task_name_error": "يرجى إدخال اسم المهمة",
+     "enter_task_description_hint": "أدخل وصف المهمة",
+     "please_enter_task_desc_error": "يرجى إدخال وصف المهمة",
+     "select_time": "اختر الوقت",
+     "add_task_button_title": "أضف المهمة"
+}

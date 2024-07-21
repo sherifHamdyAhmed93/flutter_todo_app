@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/app_theme_provider.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(8),
-      height: 100,
+      // height: 100,
       decoration: BoxDecoration(
-          color: AppColors.whiteColor, borderRadius: BorderRadius.circular(20)),
+          color: themeProvider.getContainerBackground(),
+          borderRadius: BorderRadius.circular(10)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -38,9 +44,7 @@ class TaskItem extends StatelessWidget {
                 Text(
                   'Play basket ball',
                   style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 14),
+                      .textTheme.bodyMedium,
                 )
               ],
             ),
