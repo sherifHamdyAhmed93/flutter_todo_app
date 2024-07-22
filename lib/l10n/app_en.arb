@@ -14,6 +14,8 @@
     "enter_task_description_hint": "enter task description",
     "please_enter_task_desc_error": "Please enter task desc",
     "select_time": "Select Time",
-    "add_task_button_title": "Add Task"
+    "add_task_button_title": "Add Task",
+     "edit_task" : "Edit Task",
+    "edit_task_button_title": "Save Changes"
 }
 

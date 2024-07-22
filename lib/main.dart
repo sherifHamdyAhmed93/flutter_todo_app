@@ -5,6 +5,7 @@ import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
+import 'package:flutter_todo_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -51,13 +52,16 @@ class _MyAppState extends State<MyApp> {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
     AppLanguageProvider languageProvider =
         Provider.of<AppLanguageProvider>(context);
+    print('Saved Theme is ${themeProvider.currentAppTheme}');
+    print('Saved Lang is ${languageProvider.currentAppLanguage}');
 
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(languageProvider.currentAppLanguage),
       title: 'Flutter Demo',
-      theme: themeProvider.getCurrentAppTheme(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       themeMode: themeProvider.currentAppTheme,
       initialRoute: HomeScreen.screenName,
       routes: {

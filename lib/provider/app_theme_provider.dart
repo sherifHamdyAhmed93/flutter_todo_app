@@ -52,16 +52,16 @@ class AppThemeProvider extends ChangeNotifier {
         : AppColors.primaryColor;
   }
 
+  Color getUnderLineBorderColor() {
+    return isCurrentAppThemeLight()
+        ? AppColors.underLineBorderColorColor
+        : AppColors.whiteColor;
+  }
+
   Color getContainerBackground() {
     return isCurrentAppThemeLight()
         ? AppColors.cardBackgroundLightColor
         : AppColors.cardBackgroundDarkColor;
-  }
-
-  Color getIconsColor() {
-    return isCurrentAppThemeLight()
-        ? AppColors.primaryColor
-        : AppColors.primaryColor;
   }
 
   Color getNavBarBackgrounnd() {

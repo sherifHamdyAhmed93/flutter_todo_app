@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../add_task_bottom_sheet/add_task_bottom_sheet.dart';
@@ -19,7 +20,7 @@ class EditTaskScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'To Do List',
+          AppLocalizations.of(context)!.app_title,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         centerTitle: false,

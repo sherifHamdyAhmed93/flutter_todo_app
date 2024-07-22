@@ -20,4 +20,6 @@ class AppColors{
 
   static final Color hintColor = Color(0xffA9A9A9);
   static final Color hintDarkColor = Color(0xffffffff);
+
+  static final Color underLineBorderColorColor = Color(0xff707070);
 }

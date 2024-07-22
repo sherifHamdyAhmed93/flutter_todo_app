@@ -3,10 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:provider/provider.dart';
 
+import '../model/task.dart';
 import '../provider/app_theme_provider.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
-  const AddTaskBottomSheet({super.key});
+  AddTaskBottomSheet({super.key});
 
   @override
   State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
@@ -19,6 +20,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   @override
   Widget build(BuildContext context) {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+    Task? task = ModalRoute.of(context)?.settings.arguments as Task?;
 
     return Container(
       decoration: BoxDecoration(
@@ -33,7 +35,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           Column(
             children: [
               Text(
-                AppLocalizations.of(context)!.add_new_task,
+                task == null
+                    ? AppLocalizations.of(context)!.add_new_task
+                    : AppLocalizations.of(context)!.edit_task,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium?.copyWith(
@@ -51,7 +55,15 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!
                                 .enter_your_task_hint,
-                            hintStyle: Theme.of(context).textTheme.bodySmall),
+                            hintStyle: Theme.of(context).textTheme.bodySmall,
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: themeProvider
+                                        .getUnderLineBorderColor())),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: themeProvider
+                                        .getUnderLineBorderColor()))),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return AppLocalizations.of(context)!
@@ -69,7 +81,15 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!
                                 .enter_task_description_hint,
-                            hintStyle: Theme.of(context).textTheme.bodySmall),
+                            hintStyle: Theme.of(context).textTheme.bodySmall,
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: themeProvider
+                                        .getUnderLineBorderColor())),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: themeProvider
+                                        .getUnderLineBorderColor()))),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return AppLocalizations.of(context)!
@@ -100,8 +120,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   padding: EdgeInsets.symmetric(vertical: 10)),
               onPressed: didTapOnAddTask,
               child: Text(
-                AppLocalizations.of(context)!.add_task_button_title,
-                style: Theme.of(context).textTheme.titleLarge,
+                task == null
+                    ? AppLocalizations.of(context)!.add_task_button_title
+                    : AppLocalizations.of(context)!.edit_task_button_title,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(color: AppColors.whiteColor),
               ))
         ],
       ),

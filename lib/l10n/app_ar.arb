@@ -14,5 +14,7 @@
      "enter_task_description_hint": "أدخل وصف المهمة",
      "please_enter_task_desc_error": "يرجى إدخال وصف المهمة",
      "select_time": "اختر الوقت",
-     "add_task_button_title": "أضف المهمة"
+     "add_task_button_title": "أضف المهمة",
+        "edit_task" : "تعديل المهمة",
+          "edit_task_button_title": "حفظ التغيرات"
 }

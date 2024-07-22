@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
+import 'package:flutter_todo_app/model/task.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/app_theme_provider.dart';
@@ -14,7 +15,9 @@ class TaskItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(EditTaskScreen.screenName);
+        Navigator.of(context).pushNamed(EditTaskScreen.screenName,
+            arguments:
+                Task(taskName: "", taskDesc: "", taskTime: DateTime.now()));
       },
       child: Container(
         margin: EdgeInsets.all(10),
