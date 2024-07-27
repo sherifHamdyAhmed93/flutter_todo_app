@@ -9,6 +9,7 @@ import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
+import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:flutter_todo_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,7 @@ Future<void> main() async {
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(MultiProvider(child: MyApp(), providers: [
+    ChangeNotifierProvider(create: (context) => TaskProvider()),
     ChangeNotifierProvider(create: (context) => AppThemeProvider()),
     ChangeNotifierProvider(create: (context) => AppLanguageProvider()),
   ]));

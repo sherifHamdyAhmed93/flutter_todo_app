@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/firestore/firebase_utils.dart';
+import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../model/task.dart';
@@ -18,6 +19,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   DateTime _selectedDateTime = DateTime.now();
   String _title = '';
   String _desc = '';
+  late TaskProvider taskProvider;
 
   var keys = GlobalKey<FormState>();
 
@@ -25,6 +27,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   Widget build(BuildContext context) {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
     Task? task = ModalRoute.of(context)?.settings.arguments as Task?;
+    taskProvider = Provider.of<TaskProvider>(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -160,6 +163,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       FirebaseUtils.addTaskToFirebase(task).timeout(Duration(seconds: 1),
           onTimeout: () {
         print('Task added successfully');
+        taskProvider.getAllTasks();
         Navigator.pop(context);
       });
     }

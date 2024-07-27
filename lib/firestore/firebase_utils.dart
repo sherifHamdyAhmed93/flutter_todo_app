@@ -19,16 +19,4 @@ class FirebaseUtils {
     task.id = docRef.id;
     return docRef.set(task);
   }
-
-  static Future<void> getTasks() {
-    CollectionReference<Task> tasksCollection =
-        FirebaseUtils.getFirebaseTasksCollection();
-    return tasksCollection.get().then((QuerySnapshot<Task> snapshot) {
-      snapshot.docs.forEach((doc) {
-        var task = doc.data();
-        print(
-            '${doc.id} => ${task.id} , ${task.title} , ${task.desc} , ${task.dateTime}');
-      });
-    }).catchError((error) => print("Failed to fetch users: $error"));
-  }
 }

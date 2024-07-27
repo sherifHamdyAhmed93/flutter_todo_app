@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 import '../provider/app_theme_provider.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({super.key});
+  TaskItem({super.key, required this.task});
+
+  Task task;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +47,11 @@ class TaskItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Play basket ball',
+                    task.title,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    'Play basket ball',
+                    task.desc,
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 ],

@@ -1,6 +1,7 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/app_language_provider.dart';
@@ -8,13 +9,17 @@ import '../provider/app_theme_provider.dart';
 import 'task_item.dart';
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key});
+  TasksScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     AppLanguageProvider languageProvider =
         Provider.of<AppLanguageProvider>(context);
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+    TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    if (taskProvider.taskList.isEmpty) {
+      taskProvider.getAllTasks();
+    }
 
     return Container(
       child: Column(
@@ -22,8 +27,9 @@ class TasksScreen extends StatelessWidget {
           EasyDateTimeLine(
             activeColor: AppColors.primaryColor,
             locale: languageProvider.currentAppLanguage,
-            initialDate: DateTime.now(),
+            initialDate: taskProvider.selectedDate,
             onDateChange: (selectedDate) {
+              taskProvider.setSelectedDate(selectedDate);
               //`selectedDate` the new date selected.
             },
             headerProps: EasyHeaderProps(
@@ -102,14 +108,16 @@ class TasksScreen extends StatelessWidget {
           Expanded(
             child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return TaskItem();
+                  return TaskItem(
+                    task: taskProvider.taskList[index],
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
                     height: 10,
                   );
                 },
-                itemCount: 10),
+                itemCount: taskProvider.taskList.length),
           )
         ],
       ),
