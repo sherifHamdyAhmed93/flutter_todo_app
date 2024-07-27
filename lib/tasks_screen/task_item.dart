@@ -16,8 +16,7 @@ class TaskItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed(EditTaskScreen.screenName,
-            arguments:
-                Task(taskName: "", taskDesc: "", taskTime: DateTime.now()));
+            arguments: Task(title: "", desc: "", dateTime: DateTime.now()));
       },
       child: Container(
         margin: EdgeInsets.all(10),

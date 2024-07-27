@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../model/task.dart';
@@ -15,6 +16,9 @@ class AddTaskBottomSheet extends StatefulWidget {
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   DateTime _selectedDateTime = DateTime.now();
+  String _title = '';
+  String _desc = '';
+
   var keys = GlobalKey<FormState>();
 
   @override
@@ -51,6 +55,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TextFormField(
+                        onChanged: (value) {
+                          _title = value;
+                        },
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!
@@ -76,6 +83,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         height: 10,
                       ),
                       TextFormField(
+                        onChanged: (value) {
+                          _desc = value;
+                        },
                         maxLines: 4,
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
@@ -145,6 +155,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void didTapOnAddTask() {
-    if (keys.currentState?.validate() == true) {}
+    if (keys.currentState?.validate() == true) {
+      Task task = Task(title: _title, desc: _desc, dateTime: _selectedDateTime);
+      FirebaseUtils.addTaskToFirebase(task).timeout(Duration(seconds: 1),
+          onTimeout: () {
+        print('Task added successfully');
+        Navigator.pop(context);
+      });
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/tasks_screen/tasks_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.height;
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+
+    FirebaseUtils.getTasks().timeout(Duration(seconds: 1), onTimeout: () {});
 
     return Scaffold(
       appBar: AppBar(
