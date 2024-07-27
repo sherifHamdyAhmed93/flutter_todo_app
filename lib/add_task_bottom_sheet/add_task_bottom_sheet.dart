@@ -16,9 +16,10 @@ class AddTaskBottomSheet extends StatefulWidget {
 }
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
-  DateTime _selectedDateTime = DateTime.now();
-  String _title = '';
-  String _desc = '';
+  // DateTime _selectedDateTime = DateTime.now();
+  // String _title = '';
+  // String _desc = '';
+  Task? task;
   late TaskProvider taskProvider;
 
   var keys = GlobalKey<FormState>();
@@ -26,9 +27,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   @override
   Widget build(BuildContext context) {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
-    Task? task = ModalRoute.of(context)?.settings.arguments as Task?;
+    task = ModalRoute.of(context)?.settings.arguments as Task?;
     taskProvider = Provider.of<TaskProvider>(context);
-
+    if (task == null) {
+      task = Task(title: '', desc: '', dateTime: DateTime.now());
+    }
     return Container(
       decoration: BoxDecoration(
           color: themeProvider.getContainerBackground(),
@@ -58,8 +61,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TextFormField(
+                        initialValue: task?.title,
                         onChanged: (value) {
-                          _title = value;
+                          task?.title = value;
                         },
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
@@ -87,8 +91,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       ),
                       TextFormField(
                         onChanged: (value) {
-                          _desc = value;
+                          task?.desc = value;
                         },
+                        initialValue: task?.desc,
                         maxLines: 4,
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
@@ -121,7 +126,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       TextButton(
                           onPressed: showTimePicker,
                           child: Text(
-                            '${_selectedDateTime.day} / ${_selectedDateTime.month} / ${_selectedDateTime.year}',
+                            '${task!.dateTime.day} / ${task!.dateTime.month} / ${task!.dateTime.year}',
                             style: Theme.of(context).textTheme.caption,
                           ))
                     ],
@@ -153,19 +158,35 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
 
-    _selectedDateTime = selectedDate ?? _selectedDateTime;
+    task!.dateTime = selectedDate ?? task!.dateTime;
     setState(() {});
   }
 
   void didTapOnAddTask() {
     if (keys.currentState?.validate() == true) {
-      Task task = Task(title: _title, desc: _desc, dateTime: _selectedDateTime);
-      FirebaseUtils.addTaskToFirebase(task).timeout(Duration(seconds: 1),
-          onTimeout: () {
-        print('Task added successfully');
-        taskProvider.getAllTasks();
-        Navigator.pop(context);
-      });
+      if (task!.id.isEmpty) {
+        _addNewTask();
+      } else {
+        updateTask();
+      }
     }
+  }
+
+  void updateTask() {
+    taskProvider.updateTaskFromFirebase(task!).timeout(Duration(seconds: 1),
+        onTimeout: () {
+      print('Task updated Successfully');
+      taskProvider.getAllTasks();
+      Navigator.pop(context);
+    });
+  }
+
+  void _addNewTask() {
+    FirebaseUtils.addTaskToFirebase(task!).timeout(Duration(seconds: 1),
+        onTimeout: () {
+      print('Task added successfully');
+      taskProvider.getAllTasks();
+      Navigator.pop(context);
+    });
   }
 }

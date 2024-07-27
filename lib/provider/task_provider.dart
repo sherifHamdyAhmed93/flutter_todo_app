@@ -36,12 +36,17 @@ class TaskProvider extends ChangeNotifier {
     getAllTasks();
   }
 
-  void deleteTaskFromFirebase(Task task) {
+  Future<void> deleteTaskFromFirebase(Task task) {
     var tasksCollection = FirebaseUtils.getFirebaseTasksCollection();
-    tasksCollection.doc(task.id).delete().timeout(Duration(seconds: 1),
+    return tasksCollection.doc(task.id).delete().timeout(Duration(seconds: 1),
         onTimeout: () {
       print('Task Deleted Successfully');
       getAllTasks();
     });
+  }
+
+  Future<void> updateTaskFromFirebase(Task task) {
+    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection();
+    return tasksCollection.doc(task.id).update(task.toFireStore());
   }
 }
