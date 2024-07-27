@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -8,8 +12,23 @@ import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  try {
+    Platform.isAndroid
+        ? await Firebase.initializeApp(
+            options: FirebaseOptions(
+                apiKey: 'AIzaSyCtnCJeQuKeUEy4FEZizGxHv3YHMr6vvFY',
+                appId: 'com.example.flutter_todo_app',
+                messagingSenderId: '659552831760',
+                projectId: 'todo-flutter-app-96d5f'))
+        : await Firebase.initializeApp();
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+  }
+
+  FirebaseFirestore.instance.disableNetwork();
+
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(MultiProvider(child: MyApp(), providers: [
     ChangeNotifierProvider(create: (context) => AppThemeProvider()),
@@ -56,6 +75,7 @@ class _MyAppState extends State<MyApp> {
     print('Saved Lang is ${languageProvider.currentAppLanguage}');
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(languageProvider.currentAppLanguage),
