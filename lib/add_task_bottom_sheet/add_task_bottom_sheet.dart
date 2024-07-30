@@ -16,9 +16,6 @@ class AddTaskBottomSheet extends StatefulWidget {
 }
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
-  // DateTime _selectedDateTime = DateTime.now();
-  // String _title = '';
-  // String _desc = '';
   Task? task;
   late TaskProvider taskProvider;
 
@@ -27,126 +24,131 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   @override
   Widget build(BuildContext context) {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
-    task = ModalRoute.of(context)?.settings.arguments as Task?;
     taskProvider = Provider.of<TaskProvider>(context);
     if (task == null) {
-      task = Task(title: '', desc: '', dateTime: DateTime.now());
+      task = ModalRoute.of(context)?.settings.arguments as Task?;
+      if (task == null) {
+        task = Task(title: '', desc: '', dateTime: DateTime.now());
+      }
     }
-    return Container(
-      decoration: BoxDecoration(
-          color: themeProvider.getContainerBackground(),
-          borderRadius: BorderRadius.circular(10)),
-      margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Column(
-            children: [
-              Text(
-                task == null
-                    ? AppLocalizations.of(context)!.add_new_task
-                    : AppLocalizations.of(context)!.edit_task,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium?.copyWith(
-                    color: themeProvider.isCurrentAppThemeLight()
-                        ? AppColors.blackColor
-                        : AppColors.whiteColor),
-              ),
-              Form(
-                  key: keys,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        initialValue: task?.title,
-                        onChanged: (value) {
-                          task?.title = value;
-                        },
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!
-                                .enter_your_task_hint,
-                            hintStyle: Theme.of(context).textTheme.bodySmall,
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeProvider
-                                        .getUnderLineBorderColor())),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeProvider
-                                        .getUnderLineBorderColor()))),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .please_enter_task_name_error;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          task?.desc = value;
-                        },
-                        initialValue: task?.desc,
-                        maxLines: 4,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!
-                                .enter_task_description_hint,
-                            hintStyle: Theme.of(context).textTheme.bodySmall,
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeProvider
-                                        .getUnderLineBorderColor())),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: themeProvider
-                                        .getUnderLineBorderColor()))),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!
-                                .please_enter_task_desc_error;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.select_time,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      TextButton(
-                          onPressed: showTimePicker,
-                          child: Text(
-                            '${task!.dateTime.day} / ${task!.dateTime.month} / ${task!.dateTime.year}',
-                            style: Theme.of(context).textTheme.caption,
-                          ))
-                    ],
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+            color: themeProvider.getContainerBackground(),
+            borderRadius: BorderRadius.circular(10)),
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              children: [
+                Text(
+                  task!.id.isEmpty
+                      ? AppLocalizations.of(context)!.add_new_task
+                      : AppLocalizations.of(context)!.edit_task,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: themeProvider.isCurrentAppThemeLight()
+                          ? AppColors.blackColor
+                          : AppColors.whiteColor),
+                ),
+                Form(
+                    key: keys,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextFormField(
+                          initialValue: task?.title,
+                          onChanged: (value) {
+                            task?.title = value;
+                          },
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)!
+                                  .enter_your_task_hint,
+                              hintStyle: Theme.of(context).textTheme.bodySmall,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: themeProvider
+                                          .getUnderLineBorderColor())),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: themeProvider
+                                          .getUnderLineBorderColor()))),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context)!
+                                  .please_enter_task_name_error;
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          onChanged: (value) {
+                            task?.desc = value;
+                          },
+                          initialValue: task?.desc,
+                          maxLines: 4,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                              hintText: AppLocalizations.of(context)!
+                                  .enter_task_description_hint,
+                              hintStyle: Theme.of(context).textTheme.bodySmall,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: themeProvider
+                                          .getUnderLineBorderColor())),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: themeProvider
+                                          .getUnderLineBorderColor()))),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context)!
+                                  .please_enter_task_desc_error;
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.select_time,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        TextButton(
+                            onPressed: showTimePicker,
+                            child: Text(
+                              '${task!.dateTime.day} / ${task!.dateTime.month} / ${task!.dateTime.year}',
+                              style: Theme.of(context).textTheme.caption,
+                            ))
+                      ],
+                    )),
+              ],
+            ),
+            Visibility(
+              visible: task?.isDone == false,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 10)),
+                  onPressed: didTapOnAddTask,
+                  child: Text(
+                    task!.id.isEmpty
+                        ? AppLocalizations.of(context)!.add_task_button_title
+                        : AppLocalizations.of(context)!.edit_task_button_title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: AppColors.whiteColor),
                   )),
-            ],
-          ),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 10)),
-              onPressed: didTapOnAddTask,
-              child: Text(
-                task == null
-                    ? AppLocalizations.of(context)!.add_task_button_title
-                    : AppLocalizations.of(context)!.edit_task_button_title,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: AppColors.whiteColor),
-              ))
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -154,11 +156,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   void showTimePicker() async {
     var selectedDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: task?.dateTime ?? DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
 
-    task!.dateTime = selectedDate ?? task!.dateTime;
+    task?.dateTime = selectedDate ?? task!.dateTime;
+
     setState(() {});
   }
 

@@ -8,10 +8,16 @@ import 'package:provider/provider.dart';
 
 import '../provider/app_theme_provider.dart';
 
-class TaskItem extends StatelessWidget {
+class TaskItem extends StatefulWidget {
   TaskItem({super.key, required this.task});
 
   Task task;
+
+  @override
+  State<TaskItem> createState() => _TaskItemState();
+}
+
+class _TaskItemState extends State<TaskItem> {
   late TaskProvider taskProvider;
 
   @override
@@ -20,7 +26,8 @@ class TaskItem extends StatelessWidget {
     taskProvider = Provider.of<TaskProvider>(context);
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(EditTaskScreen.screenName, arguments: task);
+        Navigator.of(context)
+            .pushNamed(EditTaskScreen.screenName, arguments: widget.task);
       },
       child: Container(
         margin: EdgeInsets.all(10),
@@ -109,17 +116,72 @@ class TaskItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        task.title,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        widget.task.title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                                color: widget.task.isDone
+                                    ? AppColors.greenColor
+                                    : AppColors.primaryColor),
                       ),
                       Text(
-                        task.desc,
+                        widget.task.desc,
                         style: Theme.of(context).textTheme.bodyMedium,
                       )
                     ],
                   ),
                 ),
-                Container(
+                buildDoneOrCheckButton()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void didTapOnDelete(BuildContext context) {
+    taskProvider.deleteTaskFromFirebase(widget.task);
+  }
+
+  void didTapOnDone() {
+    widget.task.isDone = true;
+    taskProvider
+        .updateTaskFromFirebase(widget.task)
+        .timeout(Duration(seconds: 1), onTimeout: () {
+      print('Task is  done');
+      setState(() {});
+    });
+  }
+
+  Widget buildDoneOrCheckButton() {
+    return widget.task.isDone
+        ? Text(
+            'Done!',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(color: AppColors.greenColor),
+          )
+        : ElevatedButton(
+            onPressed: didTapOnDone,
+            child: Icon(
+              Icons.check,
+              color: AppColors.whiteColor,
+              size: 30,
+            ),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                )),
+          );
+  }
+}
+
+/*
+*  Container(
                   child: Icon(
                     Icons.check,
                     color: AppColors.whiteColor,
@@ -130,15 +192,4 @@ class TaskItem extends StatelessWidget {
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(10)),
                 )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void didTapOnDelete(BuildContext context) {
-    taskProvider.deleteTaskFromFirebase(task);
-  }
-}
+* */
