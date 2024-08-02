@@ -1,0 +1,21 @@
+{
+"app_title" : "Todo List",
+"tasks_tab" : "Tasks",
+ "settings_tab" : "Settings",
+  "language" : "Language",
+  "arabic" : "Arabic",
+  "english" : "English",
+  "theme" : "Theme",
+  "night_mode" : "Dark",
+  "day_mode" : "Light",
+  "add_new_task": "Add new Task",
+    "enter_your_task_hint": "enter your task",
+    "please_enter_task_name_error": "Please enter task name",
+    "enter_task_description_hint": "enter task description",
+    "please_enter_task_desc_error": "Please enter task desc",
+    "select_time": "Select Time",
+    "add_task_button_title": "Add Task",
+     "edit_task" : "Edit Task",
+    "edit_task_button_title": "Save Changes"
+}
+
