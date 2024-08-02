@@ -7,6 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
+import 'package:flutter_todo_app/login/login_screen.dart';
+import 'package:flutter_todo_app/login/signup_screen.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
@@ -85,10 +87,12 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProvider.currentAppTheme,
-      initialRoute: HomeScreen.screenName,
+      initialRoute: LoginScreen.screenName,
       routes: {
         HomeScreen.screenName: (context) => HomeScreen(),
         EditTaskScreen.screenName: (context) => EditTaskScreen(),
+        LoginScreen.screenName: (context) => LoginScreen(),
+        SignupScreen.screenName: (context) => SignupScreen()
       },
     );
   }
