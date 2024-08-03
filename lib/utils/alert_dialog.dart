@@ -66,7 +66,10 @@ class DialogUtils {
           return AlertDialog(
             title: Text(
               title,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: AppColors.blackColor),
             ),
             content: Text(message),
             actions: actions,

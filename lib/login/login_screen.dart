@@ -4,7 +4,9 @@ import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/custom_text_field.dart';
 import 'package:flutter_todo_app/login/signup_screen.dart';
+import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/utils/alert_dialog.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -24,10 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
     return Stack(
       children: [
         Container(
-            color: AppColors.backgroundLightColor,
+            color: themeProvider.isCurrentAppThemeLight()
+                ? AppColors.backgroundLightColor
+                : AppColors.backgroundDarkColor,
             child: Image.asset(
               'assets/images/login_background.png',
               width: double.infinity,
@@ -37,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text('Create Account'),
+            title: Text('Login'),
             centerTitle: true,
             backgroundColor: Colors.transparent,
           ),
@@ -52,7 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.all(8),
                     child: Text(
                       'Welcome back',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(fontSize: 22),
                     ),
                   ),
                   Padding(
@@ -135,7 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
             message: 'Logined Successfully',
             posActionName: 'OK',
             posAction: () {
-              Navigator.pushNamed(context, HomeScreen.screenName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomeScreen.screenName, (route) => false);
             });
       } on FirebaseAuthException catch (e) {
         DialogUtils.hideLoader(context);

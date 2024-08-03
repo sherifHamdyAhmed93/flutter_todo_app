@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/custom_text_field.dart';
+import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/utils/alert_dialog.dart';
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
@@ -30,10 +32,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+
     return Stack(
       children: [
         Container(
-            color: AppColors.backgroundLightColor,
+            color: themeProvider.isCurrentAppThemeLight()
+                ? AppColors.backgroundLightColor
+                : AppColors.backgroundDarkColor,
             child: Image.asset(
               'assets/images/login_background.png',
               width: double.infinity,
@@ -151,7 +157,8 @@ class _SignupScreenState extends State<SignupScreen> {
             message: 'Register Successfully',
             posActionName: 'OK',
             posAction: () {
-              Navigator.pushNamed(context, HomeScreen.screenName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomeScreen.screenName, (route) => false);
             });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
