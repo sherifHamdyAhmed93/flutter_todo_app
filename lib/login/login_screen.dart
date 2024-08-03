@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text('Login'),
+            title: Text(AppLocalizations.of(context)!.login_title),
             centerTitle: true,
             backgroundColor: Colors.transparent,
           ),
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(
-                      'Welcome back',
+                      AppLocalizations.of(context)!.welcome_back,
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
-                        hintText: 'Email',
+                        hintText: AppLocalizations.of(context)!.email_hint,
                         controller: emailController,
                         inputType: TextInputType.emailAddress,
                         validator: (value) {
@@ -77,9 +78,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(value ?? "");
                           if (value == null || value.isEmpty) {
-                            return 'Enter your email';
+                            return AppLocalizations.of(context)!
+                                .email_is_empty_error;
                           } else if (!emailValid) {
-                            return 'Email is not valid';
+                            return AppLocalizations.of(context)!
+                                .email_is_not_valid_error;
                           }
                           return null;
                         }),
@@ -87,15 +90,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
-                        hintText: 'Password',
+                        hintText: AppLocalizations.of(context)!.password_hint,
                         controller: passwordController,
                         inputType: TextInputType.number,
                         obscure: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Enter your Password';
+                            return AppLocalizations.of(context)!
+                                .password_is_empty_error;
                           } else if (value.length < 6) {
-                            return 'Password length must be as least 6 characters';
+                            return AppLocalizations.of(context)!
+                                .password_length_error;
                           }
                           return null;
                         }),
@@ -106,7 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: validate,
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.all(20)),
-                        child: Text('Create')),
+                        child: Text(
+                            AppLocalizations.of(context)!.login_button_title)),
                   ),
                   Padding(
                     padding: EdgeInsets.all(8),
@@ -116,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             .pushNamed(SignupScreen.screenName);
                       },
                       child: Text(
-                        'Create Account',
+                        AppLocalizations.of(context)!.or_create_account,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
@@ -132,7 +138,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void validate() async {
     if (globalKeys.currentState?.validate() == true) {
-      DialogUtils.showLoader(context: context, message: 'Loading...');
+      DialogUtils.showLoader(
+          context: context,
+          message: AppLocalizations.of(context)!.loading_message);
       try {
         final credential =
             await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -154,46 +162,28 @@ class _LoginScreenState extends State<LoginScreen> {
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
             context: context,
-            title: 'Success',
-            message: 'Logined Successfully',
-            posActionName: 'OK',
+            title: AppLocalizations.of(context)!.success_title,
+            message: AppLocalizations.of(context)!.login_success_message,
+            posActionName: AppLocalizations.of(context)!.ok_button,
             posAction: () {
               Navigator.pushReplacementNamed(context, HomeScreen.screenName);
             });
       } on FirebaseAuthException catch (e) {
         DialogUtils.hideLoader(context);
-        if (e.code == 'user-not-found') {
+        if (e.code == 'invalid-credential') {
           DialogUtils.showMessage(
             context: context,
-            title: 'Error',
-            message: 'No user found for that email.',
-            posActionName: 'OK',
-          );
-        } else if (e.code == 'wrong-password') {
-          print('The account already exists for that email.');
-          DialogUtils.showMessage(
-            context: context,
-            title: 'Error',
-            message: 'Wrong password provided for that user.',
-            posActionName: 'OK',
-          );
-        } else if (e.code == 'invalid-credential') {
-          print(
-              'The supplied auth credential is incorrect, malformed or has expired');
-          DialogUtils.showMessage(
-            context: context,
-            title: 'Error',
-            message:
-                'The supplied auth credential is incorrect, malformed or has expired.',
-            posActionName: 'OK',
+            title: AppLocalizations.of(context)!.error_title,
+            message: AppLocalizations.of(context)!.invalid_credential,
+            posActionName: AppLocalizations.of(context)!.ok_button,
           );
         } else {
           print(e.code);
           DialogUtils.showMessage(
             context: context,
-            title: 'Error',
+            title: AppLocalizations.of(context)!.error_title,
             message: 'An error occurred: ${e.message}',
-            posActionName: 'OK',
+            posActionName: AppLocalizations.of(context)!.ok_button,
           );
         }
       } catch (e) {
@@ -201,9 +191,9 @@ class _LoginScreenState extends State<LoginScreen> {
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
           context: context,
-          title: 'Error',
+          title: AppLocalizations.of(context)!.error_title,
           message: e.toString(),
-          posActionName: 'OK',
+          posActionName: AppLocalizations.of(context)!.ok_button,
         );
       }
     }

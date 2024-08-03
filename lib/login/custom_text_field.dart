@@ -23,30 +23,26 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: themeProvider.getFieldBackgroundColor(),
-      ),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscure,
-        validator: validator,
-        keyboardType: inputType,
-        decoration: InputDecoration(
-            labelText: hintText,
-            labelStyle: Theme.of(context).textTheme.displaySmall?.copyWith(
-                color: themeProvider.isCurrentAppThemeLight()
-                    ? AppColors.hintColor
-                    : AppColors.hintDarkColor),
-            errorStyle: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: AppColors.redColor),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: AppColors.primaryColor))),
-      ),
+    return TextFormField(
+      controller: controller,
+      obscureText: obscure,
+      validator: validator,
+      keyboardType: inputType,
+      decoration: InputDecoration(
+          filled: true,
+          fillColor: themeProvider.getFieldBackgroundColor(),
+          labelText: hintText,
+          labelStyle: Theme.of(context).textTheme.displaySmall?.copyWith(
+              color: themeProvider.isCurrentAppThemeLight()
+                  ? AppColors.hintColor
+                  : AppColors.hintDarkColor),
+          errorStyle: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(color: AppColors.redColor),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: AppColors.primaryColor))),
     );
   }
 }

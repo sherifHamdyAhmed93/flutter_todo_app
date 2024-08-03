@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
@@ -52,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text('Create Account'),
+            title: Text(AppLocalizations.of(context)!.create_account_title),
             centerTitle: true,
             backgroundColor: Colors.transparent,
           ),
@@ -66,11 +67,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
-                        hintText: 'name',
+                        hintText: AppLocalizations.of(context)!.name_hint,
                         controller: nameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Enter your name';
+                            return AppLocalizations.of(context)!
+                                .name_is_empty_error;
                           }
                           return null;
                         }),
@@ -78,7 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
-                        hintText: 'Email',
+                        hintText: AppLocalizations.of(context)!.email_hint,
                         controller: emailController,
                         inputType: TextInputType.emailAddress,
                         validator: (value) {
@@ -86,9 +88,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(value ?? "");
                           if (value == null || value.isEmpty) {
-                            return 'Enter your email';
+                            return AppLocalizations.of(context)!
+                                .email_is_empty_error;
                           } else if (!emailValid) {
-                            return 'Email is not valid';
+                            return AppLocalizations.of(context)!
+                                .email_is_not_valid_error;
                           }
                           return null;
                         }),
@@ -96,15 +100,17 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
-                        hintText: 'Password',
+                        hintText: AppLocalizations.of(context)!.password_hint,
                         controller: passwordController,
                         inputType: TextInputType.number,
                         obscure: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Enter your Password';
+                            return AppLocalizations.of(context)!
+                                .password_is_empty_error;
                           } else if (value.length < 6) {
-                            return 'Password length must be as least 6 characters';
+                            return AppLocalizations.of(context)!
+                                .password_length_error;
                           }
                           return null;
                         }),
@@ -112,17 +118,21 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
-                        hintText: 'Confirm Password',
+                        hintText:
+                            AppLocalizations.of(context)!.confirm_password_hint,
                         controller: confirmPasswordController,
                         inputType: TextInputType.number,
                         obscure: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Enter your Confrim Password';
+                            return AppLocalizations.of(context)!
+                                .confirm_password_is_empty_error;
                           } else if (value.length < 6) {
-                            return 'Password length must be as least 6 characters';
+                            return AppLocalizations.of(context)!
+                                .password_length_error;
                           } else if (value != passwordController.text) {
-                            return 'Confirm Password must be same as password';
+                            return AppLocalizations.of(context)!
+                                .confirm_password_is_not_match_password_error;
                           }
                           return null;
                         }),
@@ -133,7 +143,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: validate,
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.all(20)),
-                        child: Text('Create')),
+                        child: Text(AppLocalizations.of(context)!
+                            .create_account_button)),
                   ),
                 ],
               ),
@@ -146,7 +157,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void validate() async {
     if (globalKeys.currentState?.validate() == true) {
-      DialogUtils.showLoader(context: context, message: 'Loading...');
+      DialogUtils.showLoader(
+          context: context,
+          message: AppLocalizations.of(context)!.loading_message);
       try {
         final credential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -168,9 +181,9 @@ class _SignupScreenState extends State<SignupScreen> {
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
             context: context,
-            title: 'Success',
-            message: 'Register Successfully',
-            posActionName: 'OK',
+            title: AppLocalizations.of(context)!.success_title,
+            message: AppLocalizations.of(context)!.register_success_message,
+            posActionName: AppLocalizations.of(context)!.ok_button,
             posAction: () {
               Navigator.pushReplacementNamed(context, HomeScreen.screenName);
             });
@@ -179,18 +192,17 @@ class _SignupScreenState extends State<SignupScreen> {
           DialogUtils.hideLoader(context);
           DialogUtils.showMessage(
             context: context,
-            title: 'Error',
-            message: 'The password provided is too weak.',
-            posActionName: 'OK',
+            title: AppLocalizations.of(context)!.error_title,
+            message: AppLocalizations.of(context)!.weak_password_error,
+            posActionName: AppLocalizations.of(context)!.ok_button,
           );
         } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
           DialogUtils.hideLoader(context);
           DialogUtils.showMessage(
             context: context,
-            title: 'Error',
-            message: 'The account already exists for that email.',
-            posActionName: 'OK',
+            title: AppLocalizations.of(context)!.error_title,
+            message: AppLocalizations.of(context)!.email_already_exist,
+            posActionName: AppLocalizations.of(context)!.ok_button,
           );
         }
       } catch (e) {
@@ -198,9 +210,9 @@ class _SignupScreenState extends State<SignupScreen> {
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
           context: context,
-          title: 'Error',
+          title: AppLocalizations.of(context)!.error_title,
           message: e.toString(),
-          posActionName: 'OK',
+          posActionName: AppLocalizations.of(context)!.ok_button,
         );
       }
     }
