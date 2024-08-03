@@ -10,6 +10,7 @@ import 'package:flutter_todo_app/login/login_screen.dart';
 import 'package:flutter_todo_app/login/signup_screen.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:flutter_todo_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
     ChangeNotifierProvider(create: (context) => TaskProvider()),
     ChangeNotifierProvider(create: (context) => AppThemeProvider()),
     ChangeNotifierProvider(create: (context) => AppLanguageProvider()),
+    ChangeNotifierProvider(create: (context) => AuthUserProvider())
   ]));
 }
 

@@ -7,6 +7,7 @@ import 'package:flutter_todo_app/login/custom_text_field.dart';
 import 'package:flutter_todo_app/login/signup_screen.dart';
 import 'package:flutter_todo_app/model/user.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/utils/alert_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -145,6 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
         if (user == null) {
           return;
         }
+
+        AuthUserProvider authUserProvider =
+            Provider.of<AuthUserProvider>(context, listen: false);
+        authUserProvider.updateUser(user);
 
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
