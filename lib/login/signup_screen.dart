@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/custom_text_field.dart';
+import 'package:flutter_todo_app/model/user.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/utils/alert_dialog.dart';
 import 'package:provider/provider.dart';
@@ -150,6 +152,14 @@ class _SignupScreenState extends State<SignupScreen> {
           email: emailController.text,
           password: passwordController.text,
         );
+
+        MyUser user = MyUser(
+            id: credential.user?.uid ?? '',
+            email: emailController.text,
+            name: nameController.text);
+
+        await FirebaseUtils.addUserToFirestore(user);
+
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
             context: context,
@@ -157,8 +167,7 @@ class _SignupScreenState extends State<SignupScreen> {
             message: 'Register Successfully',
             posActionName: 'OK',
             posAction: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, HomeScreen.screenName, (route) => false);
+              Navigator.pushReplacementNamed(context, HomeScreen.screenName);
             });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {

@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/custom_text_field.dart';
 import 'package:flutter_todo_app/login/signup_screen.dart';
+import 'package:flutter_todo_app/model/user.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/utils/alert_dialog.dart';
 import 'package:provider/provider.dart';
@@ -136,6 +138,14 @@ class _LoginScreenState extends State<LoginScreen> {
           email: emailController.text,
           password: passwordController.text,
         );
+
+        MyUser? user = await FirebaseUtils.readUserFromFirestore(
+            credential.user?.uid ?? '');
+
+        if (user == null) {
+          return;
+        }
+
         DialogUtils.hideLoader(context);
         DialogUtils.showMessage(
             context: context,
@@ -143,8 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
             message: 'Logined Successfully',
             posActionName: 'OK',
             posAction: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, HomeScreen.screenName, (route) => false);
+              Navigator.pushReplacementNamed(context, HomeScreen.screenName);
             });
       } on FirebaseAuthException catch (e) {
         DialogUtils.hideLoader(context);

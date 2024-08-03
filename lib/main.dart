@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,7 +29,7 @@ Future<void> main() async {
     print('Error initializing Firebase: $e');
   }
 
-  FirebaseFirestore.instance.disableNetwork();
+  //FirebaseFirestore.instance.disableNetwork();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(MultiProvider(child: MyApp(), providers: [

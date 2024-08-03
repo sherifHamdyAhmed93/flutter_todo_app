@@ -7,6 +7,8 @@ class MyUser {
   static const String _nameKey = 'name';
   static const String _emailKey = 'email';
 
+  static const String collectionName = 'users';
+
   MyUser({required this.id, required this.email, required this.name});
 
   MyUser.fromFireStore(Map<String, dynamic>? data)
