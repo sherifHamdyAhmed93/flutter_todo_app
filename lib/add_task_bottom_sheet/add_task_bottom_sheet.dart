@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/firestore/firebase_utils.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -176,19 +177,27 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void updateTask() {
-    taskProvider.updateTaskFromFirebase(task!).timeout(Duration(seconds: 1),
-        onTimeout: () {
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
+    taskProvider
+        .updateTaskFromFirebase(task!, authUserProvider.currentUser?.id ?? '')
+        .then((value) {
       print('Task updated Successfully');
-      taskProvider.getAllTasks();
+      taskProvider.getAllTasks(authUserProvider.currentUser?.id ?? '');
       Navigator.pop(context);
     });
   }
 
   void _addNewTask() {
-    FirebaseUtils.addTaskToFirebase(task!).timeout(Duration(seconds: 1),
-        onTimeout: () {
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
+    FirebaseUtils.addTaskToFirebase(
+            task!, authUserProvider.currentUser?.id ?? '')
+        .then((value) {
       print('Task added successfully');
-      taskProvider.getAllTasks();
+      taskProvider.getAllTasks(authUserProvider.currentUser?.id ?? '');
       Navigator.pop(context);
     });
   }

@@ -4,8 +4,9 @@ import 'package:flutter_todo_app/model/user.dart';
 import '../model/task.dart';
 
 class FirebaseUtils {
-  static CollectionReference<Task> getFirebaseTasksCollection() {
-    return FirebaseFirestore.instance
+  static CollectionReference<Task> getFirebaseTasksCollection(String userID) {
+    return FirebaseUtils.getUsersCollection()
+        .doc(userID)
         .collection(Task.collectionName)
         .withConverter<Task>(
             fromFirestore: (snapshot, options) =>
@@ -13,9 +14,9 @@ class FirebaseUtils {
             toFirestore: (task, options) => task.toFireStore());
   }
 
-  static Future<void> addTaskToFirebase(Task task) {
+  static Future<void> addTaskToFirebase(Task task, String userID) {
     CollectionReference<Task> tasksCollection =
-        FirebaseUtils.getFirebaseTasksCollection();
+        FirebaseUtils.getFirebaseTasksCollection(userID);
     DocumentReference<Task> docRef = tasksCollection.doc();
     task.id = docRef.id;
     return docRef.set(task);

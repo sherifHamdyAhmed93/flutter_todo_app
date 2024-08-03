@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/model/task.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -142,13 +143,22 @@ class _TaskItemState extends State<TaskItem> {
   }
 
   void didTapOnDelete(BuildContext context) {
-    taskProvider.deleteTaskFromFirebase(widget.task);
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
+    taskProvider.deleteTaskFromFirebase(
+        widget.task, authUserProvider.currentUser?.id ?? '');
   }
 
   void didTapOnDone() {
     widget.task.isDone = true;
+
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
     taskProvider
-        .updateTaskFromFirebase(widget.task)
+        .updateTaskFromFirebase(
+            widget.task, authUserProvider.currentUser?.id ?? '')
         .timeout(Duration(seconds: 1), onTimeout: () {
       print('Task is  done');
       setState(() {});
