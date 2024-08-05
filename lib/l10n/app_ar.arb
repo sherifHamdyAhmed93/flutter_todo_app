@@ -32,7 +32,7 @@
 "password_is_empty_error" : "كلمة المرور فارغة",
 "confirm_password_is_empty_error" : "تأكيد كلمة المرور فارغ",
 "confirm_password_is_not_match_password_error" : "تأكيد كلمة المرور لا يتطابق مع كلمة المرور",
-"invalid_credential" : "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى."
+"invalid_credential" : "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
 "create_account_title" : "إنشاء حساب",
 "ok_button" : "موافق",
 "error_title" : "خطأ",
