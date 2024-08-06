@@ -159,8 +159,7 @@ class _TaskItemState extends State<TaskItem> {
     taskProvider
         .updateTaskFromFirebase(
             widget.task, authUserProvider.currentUser?.id ?? '')
-        .timeout(Duration(seconds: 1), onTimeout: () {
-      print('Task is  done');
+        .then((value) {
       setState(() {});
     });
   }

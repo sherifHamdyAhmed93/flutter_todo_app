@@ -42,6 +42,12 @@ class CustomTextField extends StatelessWidget {
               ?.copyWith(color: AppColors.redColor),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: AppColors.primaryColor)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: AppColors.primaryColor)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: AppColors.primaryColor))),
     );
   }

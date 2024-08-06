@@ -25,7 +25,7 @@ class TaskProvider extends ChangeNotifier {
     }).toList();
 
     taskList.sort((Task task1, Task task2) {
-      return task2.dateTime.compareTo(task1.dateTime);
+      return task1.dateTime.compareTo(task2.dateTime);
     });
 
     notifyListeners();
@@ -38,8 +38,7 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> deleteTaskFromFirebase(Task task, String userID) {
     var tasksCollection = FirebaseUtils.getFirebaseTasksCollection(userID);
-    return tasksCollection.doc(task.id).delete().timeout(Duration(seconds: 1),
-        onTimeout: () {
+    return tasksCollection.doc(task.id).delete().then((value) {
       print('Task Deleted Successfully');
       getAllTasks(userID);
     });

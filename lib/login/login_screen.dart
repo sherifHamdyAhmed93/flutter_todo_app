@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.23),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.28),
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(

@@ -21,16 +21,13 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  TextEditingController nameController = TextEditingController(text: 'Sherif');
+  TextEditingController nameController = TextEditingController();
 
-  TextEditingController emailController =
-      TextEditingController(text: 'sherif@gmail.com');
+  TextEditingController emailController = TextEditingController();
 
-  TextEditingController passwordController =
-      TextEditingController(text: '123456');
+  TextEditingController passwordController = TextEditingController();
 
-  TextEditingController confirmPasswordController =
-      TextEditingController(text: '123456');
+  TextEditingController confirmPasswordController = TextEditingController();
 
   var globalKeys = GlobalKey<FormState>();
 
@@ -63,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.23),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.28),
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: CustomTextField(
@@ -185,7 +182,8 @@ class _SignupScreenState extends State<SignupScreen> {
             message: AppLocalizations.of(context)!.register_success_message,
             posActionName: AppLocalizations.of(context)!.ok_button,
             posAction: () {
-              Navigator.pushReplacementNamed(context, HomeScreen.screenName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomeScreen.screenName, (route) => false);
             });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
