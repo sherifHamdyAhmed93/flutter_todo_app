@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
@@ -53,7 +54,7 @@ class _TaskItemState extends State<TaskItem> {
                 backgroundColor: AppColors.redColor,
                 foregroundColor: AppColors.whiteColor,
                 icon: Icons.delete,
-                label: 'Delete',
+                label: AppLocalizations.of(context)?.delete,
               ),
               // SlidableAction(
               //   onPressed: doNothing,
@@ -167,7 +168,7 @@ class _TaskItemState extends State<TaskItem> {
   Widget buildDoneOrCheckButton() {
     return widget.task.isDone
         ? Text(
-            'Done!',
+            AppLocalizations.of(context)!.done,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium

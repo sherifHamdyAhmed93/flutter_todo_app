@@ -18,7 +18,10 @@ class DialogUtils {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     message,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(color: AppColors.blackColor),
                   ),
                 )
               ],

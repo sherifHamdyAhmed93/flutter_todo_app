@@ -42,5 +42,7 @@
 "weak_password_error" : "كلمة المرور ضعيفة جدًا.",
 "email_already_exist" : "الحساب موجود بالفعل لهذا البريد الإلكتروني.",
 "loading_message" : "جارٍ التحميل...",
-"password_length_error" : "يجب أن تكون كلمة المرور بطول 6 أحرف على الأقل"
+"password_length_error" : "يجب أن تكون كلمة المرور بطول 6 أحرف على الأقل",
+"done" : "تم!",
+"delete" : "حذف"
 }
