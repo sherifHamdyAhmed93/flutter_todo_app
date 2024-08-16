@@ -126,7 +126,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                             onPressed: showTimePicker,
                             child: Text(
                               '${task!.dateTime.day} / ${task!.dateTime.month} / ${task!.dateTime.year}',
-                              style: Theme.of(context).textTheme.caption,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ))
                       ],
                     )),
