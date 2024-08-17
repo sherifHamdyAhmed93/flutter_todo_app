@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/firestore/firebase_utils.dart';
+import 'package:flutter_todo_app/login/login_view_model/login_navigator.dart';
 import 'package:flutter_todo_app/model/user.dart';
-import 'package:flutter_todo_app/view_model/login_navigator.dart';
 
 class LoginViewModel extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();

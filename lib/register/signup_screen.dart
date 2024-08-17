@@ -3,38 +3,39 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/components/custom_text_field.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
-import 'package:flutter_todo_app/login/login_view_model/login_navigator.dart';
-import 'package:flutter_todo_app/login/login_view_model/login_view_model.dart';
 import 'package:flutter_todo_app/model/user.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/provider/authUserProvider.dart';
-import 'package:flutter_todo_app/register/signup_screen.dart';
+import 'package:flutter_todo_app/register/register_view_model/register_navigator.dart';
+import 'package:flutter_todo_app/register/register_view_model/register_view_model.dart';
 import 'package:flutter_todo_app/utils/alert_dialog.dart';
 import 'package:flutter_todo_app/utils/lang_translater.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  SignupScreen({super.key});
 
-  static String screenName = "login_screen";
+  static String screenName = "signup_screen";
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
-  late LoginViewModel viewModel;
+class _SignupScreenState extends State<SignupScreen>
+    implements RegisterNavigator {
+  late RegisterViewModel viewModel;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    viewModel = LoginViewModel(loginNavigator: this);
+    viewModel = RegisterViewModel(registerNavigator: this);
   }
 
   @override
   Widget build(BuildContext context) {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
+
     return ChangeNotifierProvider(
       create: (context) => viewModel,
       child: Stack(
@@ -52,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.login_title),
+              title: Text(AppLocalizations.of(context)!.create_account_title),
               centerTitle: true,
               backgroundColor: Colors.transparent,
             ),
@@ -65,13 +66,11 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.28),
                     Padding(
                       padding: EdgeInsets.all(8),
-                      child: Text(
-                        AppLocalizations.of(context)!.welcome_back,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall
-                            ?.copyWith(fontSize: 22),
-                      ),
+                      child: CustomTextField(
+                          hintText: AppLocalizations.of(context)!.name_hint,
+                          controller: viewModel.nameController,
+                          validator: (value) => KeyTranslator.translate(
+                              context, viewModel.validateName())),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8),
@@ -94,25 +93,23 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
                     ),
                     Padding(
                       padding: EdgeInsets.all(8),
-                      child: ElevatedButton(
-                          onPressed: viewModel.login,
-                          style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(20)),
-                          child: Text(AppLocalizations.of(context)!
-                              .login_button_title)),
+                      child: CustomTextField(
+                          hintText: AppLocalizations.of(context)!
+                              .confirm_password_hint,
+                          controller: viewModel.confirmPasswordController,
+                          inputType: TextInputType.number,
+                          obscure: true,
+                          validator: (value) => KeyTranslator.translate(
+                              context, viewModel.validateConfirmPassword())),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8),
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(SignupScreen.screenName);
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.or_create_account,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
+                      child: ElevatedButton(
+                          onPressed: viewModel.register,
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(20)),
+                          child: Text(AppLocalizations.of(context)!
+                              .create_account_button)),
                     ),
                   ],
                 ),
@@ -153,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginNavigator {
     DialogUtils.showMessage(
         context: context,
         title: AppLocalizations.of(context)!.success_title,
-        message: AppLocalizations.of(context)!.login_success_message,
+        message: AppLocalizations.of(context)!.register_success_message,
         posActionName: AppLocalizations.of(context)!.ok_button,
         posAction: () {
           AuthUserProvider authUserProvider =
