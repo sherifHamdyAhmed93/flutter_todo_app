@@ -81,13 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.list,
-                  size: 30,
+                  size: 20,
                 ),
                 label: AppLocalizations.of(context)!.tasks_tab),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.settings,
-                  size: 30,
+                  size: 20,
                 ),
                 label: AppLocalizations.of(context)!.settings_tab),
           ],

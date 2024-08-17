@@ -9,12 +9,12 @@ import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/login_screen.dart';
-import 'package:flutter_todo_app/login/signup_screen.dart';
 import 'package:flutter_todo_app/model/user.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
 import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
+import 'package:flutter_todo_app/register/signup_screen.dart';
 import 'package:flutter_todo_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 

@@ -74,7 +74,13 @@ class DialogUtils {
                   .titleSmall
                   ?.copyWith(color: AppColors.blackColor),
             ),
-            content: Text(message),
+            content: Text(
+              message,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: AppColors.blackColor),
+            ),
             actions: actions,
           );
         });
