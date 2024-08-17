@@ -18,7 +18,10 @@ class DialogUtils {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     message,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(color: AppColors.blackColor),
                   ),
                 )
               ],
@@ -66,9 +69,18 @@ class DialogUtils {
           return AlertDialog(
             title: Text(
               title,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: AppColors.blackColor),
             ),
-            content: Text(message),
+            content: Text(
+              message,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: AppColors.blackColor),
+            ),
             actions: actions,
           );
         });

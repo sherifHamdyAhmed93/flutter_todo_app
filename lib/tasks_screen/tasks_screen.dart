@@ -1,6 +1,7 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +18,11 @@ class TasksScreen extends StatelessWidget {
         Provider.of<AppLanguageProvider>(context);
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
     TaskProvider taskProvider = Provider.of<TaskProvider>(context);
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
     if (taskProvider.taskList.isEmpty) {
-      taskProvider.getAllTasks();
+      taskProvider.getAllTasks(authUserProvider.currentUser?.id ?? '');
     }
 
     return Container(
@@ -29,7 +33,8 @@ class TasksScreen extends StatelessWidget {
             locale: languageProvider.currentAppLanguage,
             initialDate: taskProvider.selectedDate,
             onDateChange: (selectedDate) {
-              taskProvider.setSelectedDate(selectedDate);
+              taskProvider.setSelectedDate(
+                  selectedDate, authUserProvider.currentUser?.id ?? '');
               //`selectedDate` the new date selected.
             },
             headerProps: EasyHeaderProps(

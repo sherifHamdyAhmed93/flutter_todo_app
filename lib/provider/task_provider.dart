@@ -8,8 +8,8 @@ class TaskProvider extends ChangeNotifier {
 
   DateTime selectedDate = DateTime.now();
 
-  Future<void> getAllTasks() async {
-    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection();
+  Future<void> getAllTasks(String userID) async {
+    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection(userID);
     QuerySnapshot<Task> querySnapshot = await tasksCollection.get();
     List<QueryDocumentSnapshot<Task>> queryDocumentSnapshot =
         querySnapshot.docs;
@@ -25,28 +25,27 @@ class TaskProvider extends ChangeNotifier {
     }).toList();
 
     taskList.sort((Task task1, Task task2) {
-      return task2.dateTime.compareTo(task1.dateTime);
+      return task1.dateTime.compareTo(task2.dateTime);
     });
 
     notifyListeners();
   }
 
-  void setSelectedDate(DateTime date) {
+  void setSelectedDate(DateTime date, String userID) {
     selectedDate = date;
-    getAllTasks();
+    getAllTasks(userID);
   }
 
-  Future<void> deleteTaskFromFirebase(Task task) {
-    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection();
-    return tasksCollection.doc(task.id).delete().timeout(Duration(seconds: 1),
-        onTimeout: () {
+  Future<void> deleteTaskFromFirebase(Task task, String userID) {
+    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection(userID);
+    return tasksCollection.doc(task.id).delete().then((value) {
       print('Task Deleted Successfully');
-      getAllTasks();
+      getAllTasks(userID);
     });
   }
 
-  Future<void> updateTaskFromFirebase(Task task) {
-    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection();
+  Future<void> updateTaskFromFirebase(Task task, String userID) {
+    var tasksCollection = FirebaseUtils.getFirebaseTasksCollection(userID);
     return tasksCollection.doc(task.id).update(task.toFireStore());
   }
 }

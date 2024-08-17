@@ -1,17 +1,20 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
+import 'package:flutter_todo_app/firestore/firebase_utils.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/login_screen.dart';
-import 'package:flutter_todo_app/login/signup_screen.dart';
+import 'package:flutter_todo_app/model/user.dart';
 import 'package:flutter_todo_app/provider/app_language_provider.dart';
 import 'package:flutter_todo_app/provider/app_theme_provider.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
+import 'package:flutter_todo_app/register/signup_screen.dart';
 import 'package:flutter_todo_app/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -30,13 +33,15 @@ Future<void> main() async {
     print('Error initializing Firebase: $e');
   }
 
-  FirebaseFirestore.instance.disableNetwork();
+  //FirebaseFirestore.instance.disableNetwork();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   runApp(MultiProvider(child: MyApp(), providers: [
     ChangeNotifierProvider(create: (context) => TaskProvider()),
     ChangeNotifierProvider(create: (context) => AppThemeProvider()),
     ChangeNotifierProvider(create: (context) => AppLanguageProvider()),
+    ChangeNotifierProvider(create: (context) => AuthUserProvider())
   ]));
 }
 
@@ -59,6 +64,17 @@ class _MyAppState extends State<MyApp> {
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
     // ignore_for_file: avoid_print
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      AuthUserProvider authUserProvider =
+          Provider.of<AuthUserProvider>(context, listen: false);
+      MyUser? myUser = await FirebaseUtils.readUserFromFirestore(
+          FirebaseAuth.instance.currentUser?.uid ?? '');
+      if (myUser != null) {
+        authUserProvider.updateUser(myUser);
+      }
+    }
+
     print('ready in 3...');
     await Future.delayed(const Duration(seconds: 1));
     print('ready in 2...');
@@ -75,8 +91,11 @@ class _MyAppState extends State<MyApp> {
     AppThemeProvider themeProvider = Provider.of<AppThemeProvider>(context);
     AppLanguageProvider languageProvider =
         Provider.of<AppLanguageProvider>(context);
+    AuthUserProvider authUserProvider = Provider.of<AuthUserProvider>(context);
+
     print('Saved Theme is ${themeProvider.currentAppTheme}');
     print('Saved Lang is ${languageProvider.currentAppLanguage}');
+    print('Saved User is ${authUserProvider.currentUser}');
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -87,7 +106,9 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProvider.currentAppTheme,
-      initialRoute: LoginScreen.screenName,
+      initialRoute: FirebaseAuth.instance.currentUser == null
+          ? LoginScreen.screenName
+          : HomeScreen.screenName,
       routes: {
         HomeScreen.screenName: (context) => HomeScreen(),
         EditTaskScreen.screenName: (context) => EditTaskScreen(),

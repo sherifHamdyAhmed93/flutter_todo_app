@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_todo_app/colors/app_colors.dart';
 import 'package:flutter_todo_app/edit_task_screen/edit_task_screen.dart';
 import 'package:flutter_todo_app/model/task.dart';
+import 'package:flutter_todo_app/provider/authUserProvider.dart';
 import 'package:flutter_todo_app/provider/task_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +54,7 @@ class _TaskItemState extends State<TaskItem> {
                 backgroundColor: AppColors.redColor,
                 foregroundColor: AppColors.whiteColor,
                 icon: Icons.delete,
-                label: 'Delete',
+                label: AppLocalizations.of(context)?.delete,
               ),
               // SlidableAction(
               //   onPressed: doNothing,
@@ -142,15 +144,23 @@ class _TaskItemState extends State<TaskItem> {
   }
 
   void didTapOnDelete(BuildContext context) {
-    taskProvider.deleteTaskFromFirebase(widget.task);
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
+    taskProvider.deleteTaskFromFirebase(
+        widget.task, authUserProvider.currentUser?.id ?? '');
   }
 
   void didTapOnDone() {
     widget.task.isDone = true;
+
+    AuthUserProvider authUserProvider =
+        Provider.of<AuthUserProvider>(context, listen: false);
+
     taskProvider
-        .updateTaskFromFirebase(widget.task)
-        .timeout(Duration(seconds: 1), onTimeout: () {
-      print('Task is  done');
+        .updateTaskFromFirebase(
+            widget.task, authUserProvider.currentUser?.id ?? '')
+        .then((value) {
       setState(() {});
     });
   }
@@ -158,7 +168,7 @@ class _TaskItemState extends State<TaskItem> {
   Widget buildDoneOrCheckButton() {
     return widget.task.isDone
         ? Text(
-            'Done!',
+            AppLocalizations.of(context)!.done,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
